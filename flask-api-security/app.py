@@ -3,15 +3,17 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String, Float
 import os
 from flask_marshmallow import Marshmallow
-
+from flask_jwt_extended import JWTManager, jwt_required, create_access_token
 
 app = Flask(__name__)
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'planets.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+app.config['JWT_SECRET_KEY'] = 'super-secret'# change this IRL
 
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
+jwt = JWTManager(app)
 
 
 @app.cli.command('db_create')
@@ -95,6 +97,56 @@ class Planet(db.Model):
     mass = Column(Float)
     radius = Column(Float)
     distance = Column(Float)
+
+
+@app.route('/register', methods=['POST'])
+def register():
+    email = request.form['email']
+    test = User.query.filter_by(email=email).first()
+    if test:
+        return jsonify(message='That email already exists.'), 409
+    else:
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        password = request.form['password']
+        user = User(first_name=first_name, last_name=last_name, email=email, password=password)
+        db.session.add(user)
+        db.session.commit()
+        return jsonify(message='User created successfully.'), 201
+
+
+@app.route('/reg-user', methods=['POST'])
+def register_user():
+    request_data = request.get_json()
+    email = request_data['email']
+    test = User.query.filter_by(email=email).first()
+    if test:
+        return jsonify(message='That email already exists.'), 409
+    else:
+        first_name = request_data['first_name']
+        last_name = request_data['last_name']
+        password = request_data['password']
+        user = User(first_name=first_name, last_name=last_name, email=email, password=password)
+        db.session.add(user)
+        db.session.commit()
+        return jsonify(message='User created successfully.'), 201
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    if request.is_json:
+        email = request.json['email']
+        password = request.json['password']
+    else:
+        email = request.form['email']
+        password = request.form['password']
+
+    test = User.query.filter_by(email=email, password=password).first()
+    if test:
+        access_token = create_access_token(identity=email)
+        return jsonify(message='Login succeeded!', access_token=access_token)
+    else:
+        return jsonify(message='Bad email or password'), 401
 
 
 class UserSchema(ma.Schema):
