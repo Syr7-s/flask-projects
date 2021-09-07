@@ -13,7 +13,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'pl
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['JWT_SECRET_KEY'] = 'super-secret'# change this IRL
 app.config['MAIL_SERVER'] = 'smtp.mailtrap.io'
-app.config['MAIL_SERVER'] = 'smtp.mailtrap.io'
 app.config['MAIL_PORT'] = 2525
 app.config['MAIL_USERNAME'] = os.environ['MAIL_USERNAME']#ENVIRONMENT VARIABLE
 app.config['MAIL_PASSWORD'] = os.environ['MAIL_PASSWORD']
@@ -170,6 +169,16 @@ def retrieve_password(email: str):
         return jsonify(message='Password sent to '+email)
     else:
         return jsonify(message='That email does not exist')
+
+
+@app.route('/planet_details/<int:planet_id>', methods=['GET'])
+def planet_details(planet_id: int):
+    planet = Planet.query.filter_by(planet_id=planet_id).first()
+    if planet:
+        result = planet_schema.dump(planet)
+        return jsonify(result)
+    else:
+        return jsonify(message='That planet does not exist'), 404
 
 
 class UserSchema(ma.Schema):
