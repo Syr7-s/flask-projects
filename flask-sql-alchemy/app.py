@@ -2,24 +2,30 @@ from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String, Float
 import os
+from flask_marshmallow import Marshmallow
 
 
 app = Flask(__name__)
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'planets.db')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 db = SQLAlchemy(app)
+ma = Marshmallow(app)
+
 
 @app.cli.command('db_create')
 def db_create():
     db.create_all()
     print('Database created!')
 
+
 @app.cli.command('db_drop')
 def db_drop():
     # The drop_all and create_all methods are coming from SQLAlchemy.
     db.drop_all()
     print('Database droped!')
+
 
 @app.cli.command('db_seed')
 def db_seed():
@@ -61,6 +67,15 @@ def hello_world():  # put application's code here
     return 'Hello World!'
 
 
+@app.route('/planets', methods=['GET'])
+def planets():
+    planets_list = Planet.query.all()
+    #return jsonify(data=planets_list)
+    result = planets_schema.dump(planets_list)
+    # result.data -> Attribute Error
+    return jsonify(result)
+
+
 # databases models
 class User(db.Model):
     __tablename__ = 'users'
@@ -73,7 +88,7 @@ class User(db.Model):
 
 class Planet(db.Model):
     __tablename__ = 'planets'
-    planet_id = Column(Integer,primary_key=True)
+    planet_id = Column(Integer, primary_key=True)
     planet_name = Column(String)
     planet_type = Column(String)
     home_star = Column(String)
@@ -82,6 +97,21 @@ class Planet(db.Model):
     distance = Column(Float)
 
 
+class UserSchema(ma.Schema):
+    class Meta:
+        fields = ('id', 'first_name', 'last_name', 'email', 'password')
+
+
+class PlanetSchema(ma.Schema):
+    class Meta:
+        fields = ('planet_id', 'planet_name', 'planet_type', 'home_star', 'mass', 'radius', 'distance')
+
+
+user_schema = UserSchema()
+users_schema = UserSchema(many=True)
+
+planet_schema = PlanetSchema()
+planets_schema = PlanetSchema(many=True)
 
 
 if __name__ == '__main__':
