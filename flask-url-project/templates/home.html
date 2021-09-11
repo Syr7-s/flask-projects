@@ -5,17 +5,19 @@
     <title>FLASK - URL Shortener</title>
 </head>
 <body style="background-color: darkkhaki">
-    <h1 style="text-align: center">FLASK - URL Shortener.</h1>
-    <form action="localhost:5000/home">
+<h1 style="text-align: center">FLASK - URL Shortener.</h1>
+<div>
+    <form action="localhost:5000/home" style="text-align: center;" >
         <label for="url">Web Site Url : </label>
         <input type="url" name="url" value="" required>
         <br>
         <br>
-        <label for="code">Short Name</label>
+        <label for="code">Short Name :  </label>
         <input type="text" name="code" value="" required>
         <br>
         <br>
         <input type="submit" value="Shorten">
     </form>
+</div>
 </body>
 </html>
