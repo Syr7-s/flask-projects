@@ -9,4 +9,20 @@
   <h2>{{name}}</h2>
   ```
 
+  ```python
+  @app.route('/home')
+  def home():
+      return render_template('home.html', name='Jesus')
+  ```
+
+* request.args, and inside of this args, this args is a dictionary for different parameters that could be passed in as get parameters. So I'm going to go ahead and provide inside of here, code, which is the name. 
+
+  ```python
+  @app.route('/your-url')
+  def your_url():
+      return render_template('your_url.html', code=request.args['code'])
   
+  ```
+
+  
+
