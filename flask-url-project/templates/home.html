@@ -2,9 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>FLASK</title>
+    <title>FLASK - URL Shortener</title>
 </head>
 <body style="background-color: darkkhaki">
-    <h1 style="text-align: center">This is home page.</h1>
+    <h1 style="text-align: center">FLASK - URL Shortener.</h1>
+    <form action="localhost:5000/home">
+        <label for="url">Web Site Url : </label>
+        <input type="url" name="url" value="" required>
+        <br>
+        <br>
+        <label for="code">Short Name</label>
+        <input type="text" name="code" value="" required>
+        <br>
+        <br>
+        <input type="submit" value="Shorten">
+    </form>
 </body>
 </html>
