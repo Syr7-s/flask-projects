@@ -24,5 +24,16 @@
   
   ```
 
-  
+* . And instead of saying .args we're going to change this to .form. When we're working with a POST request to get any parameter information, we have to use a .form instead of a .args
 
+  ```python
+  @app.route('/your-url', methods=['GET','POST'])
+  def your_url():
+      if request.method == 'POST':
+          return render_template('your_url.html', code=request.form['code']) #code=request.args['code']
+      else:
+          return jsonify(message='This is not valid ')
+  
+  ```
+
+  
