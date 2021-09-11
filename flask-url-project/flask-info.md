@@ -1,0 +1,2 @@
+### Flask
+*  This templating functionality all comes thanks to Jinja. Now, Jinja is this awesome template engine which is created by the same people that have created Flask. However, Jinja is used in a lot of other projects than just Flask, it's pretty popular, and there's so many different options and functionality that you can use with Jinja.
