@@ -33,7 +33,7 @@ def your_url():
         else:
             f = request.files['file']
             full_name = request.form['code'] + secure_filename(f.filename)
-            f.save("C:\\Users\\Casper\Desktop\\flask-projects\\flask-url-project\\"+full_name)
+            f.save("C:\\Users\\Casper\Desktop\\flask-projects\\flask-url-project\\static\\user_files\\"+full_name)
             urls[request.form['code']] = {'file': full_name}
         with open('urls.json', 'w') as url_file:
             json.dump(urls, url_file)
@@ -50,6 +50,8 @@ def redirect_to_url(code):
             if code in urls.keys():
                 if 'url' in urls[code].keys():
                     return redirect(urls[code]['url'])
+                else:
+                    return redirect(url_for('static', filename='user_files/' + urls[code]['file']))
 
 
 if __name__ == '__main__':
