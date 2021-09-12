@@ -2,10 +2,13 @@ from flask import Flask,render_template, request, jsonify, redirect, url_for, fl
 import json
 import os.path
 from werkzeug.utils import secure_filename
+
+
 app = Flask(__name__)
 app.secret_key = 'h432hisdf5465akjafsdsd65asdwca'
 
-#bp = Blueprint('app', __name__)
+
+#app = Blueprint('app', __name__)
 
 
 @app.route('/')
