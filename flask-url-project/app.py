@@ -62,6 +62,11 @@ def page_not_found(error):
     return render_template('page_not_found.html'), 404
 
 
+@app.route('/api')
+def session_api():
+    return jsonify(session=list(session.keys()))
+
+
 """
 @app.route('/not_found/<string:code>')
 def not_found(code: str):
