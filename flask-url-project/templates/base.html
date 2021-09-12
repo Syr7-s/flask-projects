@@ -2,9 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>{% block title %}Base
+    {% endblock %}</title>
 </head>
 <body>
-
+<!--<h1>This is Base</h1>-->
+{% for message in get_flashed_messages() %}
+    <h2>{{ message }}</h2>
+{% endfor %}
+{% block main %}
+{% endblock %}
 </body>
 </html>
