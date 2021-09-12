@@ -1,0 +1,54 @@
+{% extends 'my_templates/base.html' %}
+{% block main %}
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}URL Shortener
+        {% endblock %}</title>
+    </head>
+    <body style="background-color: darkkhaki">
+    <h1 style="text-align: center">FLASK - URL Shortener.</h1>
+    <div>
+
+        <form action="/your-url" style="text-align: center;" method="POST">
+            <label for="url">Web Site Url : </label>
+            <input type="url" name="url" value="" required>
+            <br>
+            <br>
+            <label for="code">Short Name : </label>
+            <input type="text" name="code" value="" required>
+            <br>
+            <br>
+            <input type="submit" value="Shorten">
+        </form>
+    </div>
+    <div>
+        <form action="/your-url" style="text-align: center;" method="POST" , enctype="multipart/form-data">
+            <label for="file"> File : </label>
+            <input type="file" name="file" value="" required>
+            <br>
+            <br>
+            <label for="code">Short Name : </label>
+            <input type="text" name="code" value="" required>
+            <br>
+            <br>
+            <input type="submit" value="Shorten">
+        </form>
+    </div>
+    <div>
+        {% if codes %}
+            <h2>Codes you have created</h2>
+            <ul>
+                {% for code in codes %}
+                    <a href="{{ url_for('redirect_to_url',code=code) }}">
+                        <li>{{ code }}</li>
+                    </a>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    </body>
+    </html>
+{% endblock %}

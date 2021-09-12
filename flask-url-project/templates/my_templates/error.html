@@ -1,0 +1,17 @@
+{% extends 'my_templates/base.html' %}
+{% block title %}Error
+{% endblock %}
+{% block main %}
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}404 NOT FOUND
+{% endblock %}</title>
+    </head>
+    <body style="background-color: darkseagreen">
+    <h1 style="text-align: center">404 NOT FOUND</h1>
+    <h2 style="text-align: center">{{ code }}</h2>
+    </body>
+    </html>
+{% endblock %}
