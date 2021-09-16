@@ -49,6 +49,7 @@ def update():
             if user['userID'] == user_id:
                 user['userName'] = user_data_for_update['userName']
                 user['userLastName'] = user_data_for_update['userLastName']
+                user_list[index] = user
                 break
             index += 1
         return jsonify(result=user_list)
